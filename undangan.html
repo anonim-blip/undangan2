@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Undangan Pernikahan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lora&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lora', serif;
+      background: url('https://i.pinimg.com/736x/bd/5d/29/bd5d29073c3d6f61d6e845e86bf1395a.jpg');
+     background-size: cover;
+  color: #5e2c2c;
+  overflow-x: hidden;
+}
+
+.frame {
+  border: 12px double #e7b9b9;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(177, 108, 108, 0.4);
+  animation: glow 2s infinite alternate;
+  background: rgba(255, 245, 245, 0.75);
+  backdrop-filter: blur(6px);
+}
+#page1 h1 { font-size: 2.2rem; }
+#page1 h2 { font-size: 1.6rem; }
+#page1 p { font-size: 0.95rem; }
+
+    .page {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 100vh;
+      padding: 50px 20px;
+      animation: fadeSlide 0.8s ease;
+      position: relative;
+    }
+
+    .page.active {
+      display: flex;
+    }
+
+
+
+
+    @keyframes glow {
+      from { box-shadow: 0 0 10px rgba(202,167,116,0.3); }
+      to { box-shadow: 0 0 20px rgba(202,167,116,0.7); }
+    }
+
+    h1, h2 {
+      font-family: 'Great Vibes', cursive;
+      color: #b56b6b;
+    }
+
+    h1 { font-size: 3rem; margin-bottom: 10px; }
+    h2 { font-size: 2.3rem; margin: 10px 0; }
+    p { font-size: 1.1rem; max-width: 600px; margin: 10px 0; }
+
+    .photo {
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: url('https://tse2.mm.bing.net/th/id/OIP.yNDzXOIYpW2xllvxIgoKrAHaIc?pid=Api&P=0&h=180') center/cover;
+      border: 6px solid #bfa36f;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background: #bfa36f;
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 25px;
+      margin: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: #a37c4e;
+    }
+
+    iframe {
+      border: none;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 500px;
+      height: 300px;
+      margin-top: 20px;
+    }
+
+    .input-box {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .input-box input,
+    .input-box textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      font-family: 'Lora', serif;
+    }
+
+    .rekening {
+      background: #fcefe3;
+      padding: 16px;
+      border-radius: 12px;
+      border: 2px dashed #bfa36f;
+      margin: 20px 0;
+    }
+
+    .countdown {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .vintage-flower-top, .vintage-flower-bottom {
+  position: absolute;
+  width: 180px;
+  opacity: 0.7;
+  z-index: 1;
+}
+.vintage-flower-top {
+  top: 10px;
+  left: 10px;
+}
+.vintage-flower-bottom {
+  bottom: 10px;
+  right: 10px;
+  transform: rotate(180deg);
+}
+
+/* Falling Leaves */
+.fall {
+  position: fixed;
+  top: -50px;
+  z-index: 0;
+  animation: fall 10s linear infinite;
+  opacity: 0.5;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Intro animation */
+.page {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 1s ease-in-out;
+}
+
+.page.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+  </style>
+</head>
+
+
+
+<body>
+
+<audio autoplay loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+</audio>
+
+<section class="page active" id="page1">
+  <div class="frame">
+    <div class="photo"></div>
+    <h1>Undangan Pernikahan</h1>
+    <p>Kepada Yth. Bapak/Ibu/Saudara/i</p>
+    <h2 id="guest-name">Nama Tamu</h2>
+    <div class="countdown" id="countdown"></div>
+    <button onclick="nextPage()">Buka Undangan</button>
+  </div>
+</section>
+
+<section class="page" id="page2">
+  <div class="frame">
+    <h2>Surianti & Suga</h2>
+    <h4>Anak ke-4 Bapak Hadori & Anak Ke-2 Bapak Min Geumjae</h3>
+    <p>Dengan penuh kebahagiaan, kami mengundang Anda untuk hadir dalam pernikahan kami:</p>
+    <p><strong>Sabtu, 20 Juli 2025</strong></p>
+    <p><strong>Pukul 10.00 WIB - selesai</strong></p>
+    <button onclick="prevPage()">Kembali</button>
+    <button onclick="nextPage()">Selanjutnya</button>
+  </div>
+</section>
+
+<section class="page" id="page3">
+  <div class="frame">
+    <h2>Lokasi Acara</h2>
+    <p>Gedung Harmoni, Jl. Melati No.123, Pontianak</p>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15957.405212647934!2d109.3278457!3d-0.039397!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e1d592bda26116f%3A0x2583b16d8e44199!2sPontianak!5e0!3m2!1sid!2sid!4v1719924442345!5m2!1sid!2sid" allowfullscreen></iframe>
+    <button onclick="prevPage()">Kembali</button>
+    <button onclick="nextPage()">Selanjutnya</button>
+  </div>
+</section>
+
+<section class="page" id="page4">
+  <div class="frame">
+    <h2>Ucapan & Hadiah</h2>
+    <div class="rekening">
+      <p><strong>Bank BCA</strong><br>1234567890<br>a.n. SUGA & SURI</p>
+    </div>
+
+    <div class="input-box">
+      <input type="text" id="namaRSVP" placeholder="Nama Anda">
+      <textarea id="ucapan" rows="3" placeholder="Tulis ucapan atau doa..."></textarea>
+      <button onclick="submitRSVP()">Kirim via WhatsApp</button>
+    </div>
+    <button onclick="prevPage()">Kembali</button>
+  </div>
+</section>
+
+<script>
+  let currentPage = 1;
+  const totalPages = 4;
+
+  function showPage(n) {
+    document.querySelectorAll('.page').forEach((p, i) => {
+      p.classList.remove('active');
+      if (i === n - 1) p.classList.add('active');
+    });
+    currentPage = n;
+  }
+
+  function nextPage() {
+    if (currentPage < totalPages) showPage(currentPage + 1);
+  }
+
+  function prevPage() {
+    if (currentPage > 1) showPage(currentPage - 1);
+  }
+
+  function submitRSVP() {
+  const name = document.getElementById("namaRSVP").value;
+  const wish = document.getElementById("ucapan").value;
+  const phoneNumber = "6281263039363"; // Ganti dengan nomor WA penerima (format internasional, tanpa +)
+
+  if (name && wish) {
+    const message = `Assalamu'alaikum,\nSaya *${name}* ingin menyampaikan ucapan:\n"${wish}"\nTerima kasih 🙏`;
+    const encodedMessage = encodeURIComponent(message);
+    const waUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+    window.open(waUrl, '_blank');
+  } else {
+    alert("Mohon lengkapi nama dan ucapan terlebih dahulu.");
+  }
+}
+
+
+  const countdownDate = new Date("Jul 20, 2025 10:00:00").getTime();
+  const cdEl = document.getElementById("countdown");
+  setInterval(() => {
+    const now = new Date().getTime();
+    const distance = countdownDate - now;
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    if (distance > 0) {
+      cdEl.innerHTML = `Menuju Hari Bahagia: ${days} hari lagi`;
+    } else {
+      cdEl.innerHTML = "Hari Bahagia Telah Tiba 💍";
+    }
+  }, 1000);
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const guest = urlParams.get("tamu");
+  if (guest) document.getElementById("guest-name").innerText = decodeURIComponent(guest);
+</script>
+
+</body>
+</html>
