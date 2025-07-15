@@ -3,295 +3,453 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Undangan Pernikahan</title>
+  <title>Undangan Pernikahan 3D</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lora&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Lora', serif;
-      background: url('https://i.pinimg.com/736x/b6/19/ce/b619ce3763b051df5831396887cdfa59.jpg');
-     background-size: cover;
-  color: #5e2c2c;
-  overflow-x: hidden;
-}
+      background: #f9f3f3;
+      color: #5e2c2c;
+      overflow-x: hidden;
+      height: 100vh;
+      overflow-y: hidden;
+    }
 
-.frame {
-  border: 12px double #e7b9b9;
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 0 20px rgba(177, 108, 108, 0.4);
-  animation: glow 2s infinite alternate;
-  background: rgba(255, 245, 245, 0.75);
-  backdrop-filter: blur(6px);
-}
-#page1 h1 { font-size: 2.2rem; }
-#page1 h2 { font-size: 1.6rem; }
-#page1 p { font-size: 0.95rem; }
+    /* Main Container */
+    .invitation-container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
 
+    /* Pages */
     .page {
-      display: none;
-      flex-direction: column;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      min-height: 100vh;
-      padding: 50px 20px;
-      animation: fadeSlide 0.8s ease;
-      position: relative;
+      flex-direction: column;
+      padding: 20px;
+      transform-style: preserve-3d;
+      transition: all 1.5s ease-in-out;
+      opacity: 0;
+      visibility: hidden;
+      background-size: cover;
+      background-position: center;
     }
 
     .page.active {
-      display: flex;
+      opacity: 1;
+      visibility: visible;
+      transform: translateZ(0);
     }
 
-
-
-
-    @keyframes glow {
-      from { box-shadow: 0 0 10px rgba(202,167,116,0.3); }
-      to { box-shadow: 0 0 20px rgba(202,167,116,0.7); }
+    /* Cover Page */
+    #cover {
+      background: url('https://i.pinimg.com/736x/b6/19/ce/b619ce3763b051df5831396887cdfa59.jpg') center/cover;
+      z-index: 10;
     }
 
+    #cover.active {
+      z-index: 20;
+    }
+
+    /* Frame Design */
+    .frame {
+      border: 12px double #e7b9b9;
+      border-radius: 20px;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.85);
+      max-width: 800px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(177, 108, 108, 0.3);
+      transform: translateZ(50px);
+      position: relative;
+    }
+
+    /* Typography */
     h1, h2 {
       font-family: 'Great Vibes', cursive;
       color: #b56b6b;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     }
 
-    h1 { font-size: 3rem; margin-bottom: 10px; }
-    h2 { font-size: 2.3rem; margin: 10px 0; }
-    p { font-size: 1.1rem; max-width: 600px; margin: 10px 0; }
+    h1 { font-size: 3.5rem; margin-bottom: 15px; }
+    h2 { font-size: 2.5rem; margin: 20px 0; }
+    p { font-size: 1.1rem; line-height: 1.6; margin: 15px 0; }
 
-    .photo {
-      width: 180px; height: 180px;
+    /* Couple Photo */
+    .couple-photo {
+      width: 200px;
+      height: 200px;
       border-radius: 50%;
-      background: url('https://tse2.mm.bing.net/th/id/OIP.yNDzXOIYpW2xllvxIgoKrAHaIc?pid=Api&P=0&h=180') center/cover;
-      border: 6px solid #bfa36f;
-      margin-bottom: 20px;
+      background: url('https://i.pinimg.com/736x/5a/3b/85/5a3b85a1c3a5d1b6e8c3a8e8d7c3a8e8.jpg') center/cover;
+      border: 8px solid #bfa36f;
+      margin: 0 auto 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
 
-    button {
-      background: #bfa36f;
+    /* Button */
+    .btn {
+      background: #b56b6b;
       color: white;
       border: none;
-      padding: 10px 22px;
+      padding: 12px 25px;
       border-radius: 25px;
-      margin: 10px;
-      font-size: 1rem;
       cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    button:hover {
-      background: #a37c4e;
-    }
-
-    iframe {
-      border: none;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 500px;
-      height: 300px;
+      font-size: 1rem;
+      transition: all 0.3s;
       margin-top: 20px;
     }
 
-    .input-box {
-      margin-top: 20px;
+    .btn:hover {
+      background: #9a5555;
+      transform: translateY(-2px);
+    }
+
+    /* Curtain Opening Effect */
+    .curtain {
+      position: fixed;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      background: #5e2c2c;
+      z-index: 100;
+      transition: all 1.5s ease-in-out;
+    }
+
+    .curtain-left {
+      left: 0;
+      transform: translateX(0);
+    }
+
+    .curtain-right {
+      right: 0;
+      transform: translateX(0);
+    }
+
+    .curtain-open .curtain-left {
+      transform: translateX(-100%);
+    }
+
+    .curtain-open .curtain-right {
+      transform: translateX(100%);
+    }
+
+    /* Butterflies */
+    .butterfly {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      z-index: 5;
+      opacity: 0.8;
+      animation: float 8s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-20px) rotate(5deg); }
+      50% { transform: translateY(0) rotate(0deg); }
+      75% { transform: translateY(-15px) rotate(-5deg); }
+    }
+
+    /* Countdown */
+    .countdown {
       display: flex;
-      flex-direction: column;
-      width: 100%;
-      max-width: 400px;
-    }
-
-    .input-box input,
-    .input-box textarea {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      margin-bottom: 12px;
-      font-family: 'Lora', serif;
-    }
-
-    .rekening {
-      background: #fcefe3;
-      padding: 16px;
-      border-radius: 12px;
-      border: 2px dashed #bfa36f;
+      justify-content: center;
+      gap: 10px;
       margin: 20px 0;
     }
 
-    .countdown {
-      font-size: 1.2rem;
+    .countdown-item {
+      background: #b56b6b;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .countdown-number {
+      font-size: 1.5rem;
       font-weight: bold;
-      margin-top: 15px;
     }
 
-    @keyframes fadeSlide {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* Music Player */
+    .music-player {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 200;
+      background: white;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      cursor: pointer;
     }
-    .vintage-flower-top, .vintage-flower-bottom {
-  position: absolute;
-  width: 180px;
-  opacity: 0.7;
-  z-index: 1;
-}
-.vintage-flower-top {
-  top: 10px;
-  left: 10px;
-}
-.vintage-flower-bottom {
-  bottom: 10px;
-  right: 10px;
-  transform: rotate(180deg);
-}
 
-/* Falling Leaves */
-.fall {
-  position: fixed;
-  top: -50px;
-  z-index: 0;
-  animation: fall 10s linear infinite;
-  opacity: 0.5;
-}
+    .music-player i {
+      font-size: 1.5rem;
+      color: #b56b6b;
+    }
 
-@keyframes fall {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 0.7;
-  }
-  100% {
-    transform: translateY(100vh) rotate(360deg);
-    opacity: 0;
-  }
-}
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 { font-size: 2.5rem; }
+      h2 { font-size: 2rem; }
 
-/* Intro animation */
-.page {
-  opacity: 0;
-  transform: scale(0.95);
-  transition: all 1s ease-in-out;
-}
-
-.page.active {
-  opacity: 1;
-  transform: scale(1);
-}
-
+      .couple-photo {
+        width: 150px;
+        height: 150px;
+      }
+    }
   </style>
 </head>
 
-
-
 <body>
-
-<audio autoplay loop>
-  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
-</audio>
-
-<section class="page active" id="page1">
-  <div class="frame">
-    <div class="photo"></div>
-    <h1>Undangan Pernikahan</h1>
-    <p>Kepada Yth. Bapak/Ibu/Saudara/i</p>
-    <h2 id="guest-name">Nama Tamu</h2>
-    <div class="countdown" id="countdown"></div>
-    <button onclick="nextPage()">Buka Undangan</button>
+  <!-- Music Player -->
+  <div class="music-player" onclick="toggleMusic()">
+    <i class="fas fa-music"></i>
   </div>
-</section>
+  <audio id="wedding-music" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  </audio>
 
-<section class="page" id="page2">
-  <div class="frame">
-    <h2>Surianti & Rian </h2>
-    <h4>Anak ke-4 Bapak Ha & Anak Ke-2 Bapak Aprian</h3>
-    <p>Dengan penuh kebahagiaan, kami mengundang Anda untuk hadir dalam pernikahan kami:</p>
-    <p><strong>Sabtu, 20 Juli 2025</strong></p>
-    <p><strong>Pukul 10.00 WIB - selesai</strong></p>
-    <button onclick="prevPage()">Kembali</button>
-    <button onclick="nextPage()">Selanjutnya</button>
-  </div>
-</section>
+  <!-- Curtain Opening Effect -->
+  <div class="curtain curtain-left"></div>
+  <div class="curtain curtain-right"></div>
 
-<section class="page" id="page3">
-  <div class="frame">
-    <h2>Lokasi Acara</h2>
-    <p>Gedung Harmoni, Jl. Melati No.123, Pontianak</p>
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15957.405212647934!2d109.3278457!3d-0.039397!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e1d592bda26116f%3A0x2583b16d8e44199!2sPontianak!5e0!3m2!1sid!2sid!4v1719924442345!5m2!1sid!2sid" allowfullscreen></iframe>
-    <button onclick="prevPage()">Kembali</button>
-    <button onclick="nextPage()">Selanjutnya</button>
-  </div>
-</section>
+  <!-- Butterflies -->
+  <div class="butterfly" style="background-image: url('https://www.freepnglogos.com/uploads/butterfly-png/butterfly-png-transparent-images-png-only-28.png'); top: 20%; left: 10%; animation-delay: 0s;"></div>
+  <div class="butterfly" style="background-image: url('https://www.freepnglogos.com/uploads/butterfly-png/butterfly-png-transparent-images-png-only-28.png'); top: 70%; left: 80%; animation-delay: 1s;"></div>
+  <div class="butterfly" style="background-image: url('https://www.freepnglogos.com/uploads/butterfly-png/butterfly-png-transparent-images-png-only-28.png'); top: 40%; left: 60%; animation-delay: 2s;"></div>
 
-<section class="page" id="page4">
-  <div class="frame">
-    <h2>Ucapan & Hadiah</h2>
-    <div class="rekening">
-      <p><strong>Bank BCA</strong><br>1234567890<br>a.n. Rian & Suri</p>
+  <!-- Main Container -->
+  <div class="invitation-container">
+    <!-- Cover Page -->
+    <div id="cover" class="page active">
+      <div class="frame">
+        <div class="couple-photo"></div>
+        <h1>Undangan Pernikahan</h1>
+        <p>Kepada Yth. Bapak/Ibu/Saudara/i</p>
+        <h2 id="guest-name">Nama Tamu</h2>
+
+        <div class="countdown" id="countdown">
+          <div class="countdown-item">
+            <div class="countdown-number" id="days"></div>
+            <div>Hari</div>
+          </div>
+          <div class="countdown-item">
+            <div class="countdown-number" id="hours"></div>
+            <div>Jam</div>
+          </div>
+          <div class="countdown-item">
+            <div class="countdown-number" id="minutes"></div>
+            <div>Menit</div>
+          </div>
+          <div class="countdown-item">
+            <div class="countdown-number" id="seconds"></div>
+            <div>Detik</div>
+          </div>
+        </div>
+
+        <button class="btn" onclick="openInvitation()">Buka Undangan</button>
+      </div>
     </div>
 
-    <div class="input-box">
-      <input type="text" id="namaRSVP" placeholder="Nama Anda">
-      <textarea id="ucapan" rows="3" placeholder="Tulis ucapan atau doa..."></textarea>
-      <button onclick="submitRSVP()">Kirim via WhatsApp</button>
+    <!-- Page 2 - Couple -->
+    <div id="page2" class="page" style="background: rgba(255, 245, 245, 0.9);">
+      <div class="frame">
+        <h2>Surianti & Rian</h2>
+        <p>Anak ke-4 Bapak Ha & Anak Ke-2 Bapak Aprian</p>
+
+        <div style="display: flex; justify-content: center; gap: 15px; margin: 20px 0; flex-wrap: wrap;">
+          <div style="width: 120px; height: 120px; border-radius: 50%; background: url('https://i.pinimg.com/736x/5a/3b/85/5a3b85a1c3a5d1b6e8c3a8e8d7c3a8e8.jpg') center/cover; border: 5px solid #bfa36f;"></div>
+          <div style="width: 120px; height: 120px; border-radius: 50%; background: url('https://i.pinimg.com/736x/5a/3b/85/5a3b85a1c3a5d1b6e8c3a8e8d7c3a8e8.jpg') center/cover; border: 5px solid #bfa36f;"></div>
+        </div>
+
+        <p>Dengan penuh kebahagiaan, kami mengundang Anda untuk hadir dalam pernikahan kami:</p>
+        <p><strong>Sabtu, 20 Juli 2025</strong></p>
+        <p><strong>Pukul 10.00 WIB - selesai</strong></p>
+
+        <button class="btn" onclick="nextPage()">Lanjut</button>
+      </div>
     </div>
-    <button onclick="prevPage()">Kembali</button>
+
+    <!-- Page 3 - Location -->
+    <div id="page3" class="page" style="background: rgba(255, 235, 235, 0.9);">
+      <div class="frame">
+        <h2>Lokasi Acara</h2>
+        <p>Gedung Harmoni, Jl. Melati No.123, Pontianak</p>
+
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15957.405212647934!2d109.3278457!3d-0.039397!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e1d592bda26116f%3A0x2583b16d8e44199!2sPontianak!5e0!3m2!1sid!2sid!4v1719924442345!5m2!1sid!2sid"
+                allowfullscreen
+                style="width: 100%; height: 300px; border: none; border-radius: 10px; margin: 20px 0;">
+        </iframe>
+
+        <button class="btn" onclick="openMaps()">
+          <i class="fas fa-map-marker-alt"></i> Buka di Maps
+        </button>
+        <button class="btn" onclick="nextPage()" style="margin-top: 10px;">Lanjut</button>
+      </div>
+    </div>
+
+    <!-- Page 4 - RSVP -->
+    <div id="page4" class="page" style="background: rgba(255, 245, 245, 0.9);">
+      <div class="frame">
+        <h2>Konfirmasi Kehadiran</h2>
+
+        <div style="background: #fcefe3; padding: 16px; border-radius: 12px; border: 2px dashed #bfa36f; margin: 20px 0;">
+          <h3>Informasi Rekening</h3>
+          <p><strong>Bank BCA</strong><br>1234567890<br>a.n. Rian & Suri</p>
+        </div>
+
+        <div style="margin: 20px 0; width: 100%; max-width: 400px;">
+          <input type="text" id="namaRSVP" placeholder="Nama Anda" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #e7b9b9; border-radius: 8px;">
+          <select id="kehadiran" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #e7b9b9; border-radius: 8px;">
+            <option value="">Konfirmasi Kehadiran</option>
+            <option value="hadir">Hadir</option>
+            <option value="tidak-hadir">Tidak Hadir</option>
+          </select>
+          <textarea id="ucapan" rows="3" placeholder="Tulis ucapan atau doa..." style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #e7b9b9; border-radius: 8px;"></textarea>
+          <button class="btn" onclick="submitRSVP()">
+            <i class="fas fa-paper-plane"></i> Kirim Konfirmasi
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
-</section>
 
-<script>
-  let currentPage = 1;
-  const totalPages = 4;
+  <script>
+    // Music control
+    const music = document.getElementById('wedding-music');
+    const musicBtn = document.querySelector('.music-player');
 
-  function showPage(n) {
-    document.querySelectorAll('.page').forEach((p, i) => {
-      p.classList.remove('active');
-      if (i === n - 1) p.classList.add('active');
-    });
-    currentPage = n;
-  }
-
-  function nextPage() {
-    if (currentPage < totalPages) showPage(currentPage + 1);
-  }
-
-  function prevPage() {
-    if (currentPage > 1) showPage(currentPage - 1);
-  }
-
-  function submitRSVP() {
-  const name = document.getElementById("namaRSVP").value;
-  const wish = document.getElementById("ucapan").value;
-  const phoneNumber = "6281263039363"; // Ganti dengan nomor WA penerima (format internasional, tanpa +)
-
-  if (name && wish) {
-    const message = `Assalamu'alaikum,\nSaya *${name}* ingin menyampaikan ucapan:\n"${wish}"\nTerima kasih 🙏`;
-    const encodedMessage = encodeURIComponent(message);
-    const waUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-
-    window.open(waUrl, '_blank');
-  } else {
-    alert("Mohon lengkapi nama dan ucapan terlebih dahulu.");
-  }
-}
-
-
-  const countdownDate = new Date("Jul 20, 2025 10:00:00").getTime();
-  const cdEl = document.getElementById("countdown");
-  setInterval(() => {
-    const now = new Date().getTime();
-    const distance = countdownDate - now;
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    if (distance > 0) {
-      cdEl.innerHTML = `Menuju Hari Bahagia: ${days} hari lagi`;
-    } else {
-      cdEl.innerHTML = "Hari Bahagia Telah Tiba 💍";
+    function toggleMusic() {
+      if (music.paused) {
+        music.play();
+        musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      } else {
+        music.pause();
+        musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+      }
     }
-  }, 1000);
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const guest = urlParams.get("tamu");
-  if (guest) document.getElementById("guest-name").innerText = decodeURIComponent(guest);
-</script>
+    // Try to autoplay music (may be blocked by browser)
+    document.addEventListener('click', function() {
+      if (music.paused) {
+        music.play().catch(e => console.log('Autoplay blocked:', e));
+      }
+    }, { once: true });
 
+    // Countdown
+    const countdownDate = new Date("Jul 20, 2025 10:00:00").getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = countdownDate - now;
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById('days').innerText = days;
+      document.getElementById('hours').innerText = Math.floor(hours);
+      document.getElementById('minutes').innerText = Math.floor(minutes);
+      document.getElementById('seconds').innerText = seconds;
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // RSVP Form
+    function submitRSVP() {
+      const name = document.getElementById("namaRSVP").value;
+      const attendance = document.getElementById("kehadiran").value;
+      const wish = document.getElementById("ucapan").value;
+      const phoneNumber = "6281263039363";
+
+      if (name && attendance) {
+        const status = attendance === "hadir" ? "Hadir" : "Tidak Hadir";
+        const message = `Assalamu'alaikum,\nSaya *${name}* ingin mengkonfirmasi kehadiran:\n*${status}*\n\nUcapan: "${wish || '-'}"\n\nTerima kasih 🙏`;
+        const encodedMessage = encodeURIComponent(message);
+        const waUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+        window.open(waUrl, '_blank');
+      } else {
+        alert("Mohon lengkapi nama dan konfirmasi kehadiran terlebih dahulu.");
+      }
+    }
+
+    // Open Maps
+    function openMaps() {
+      window.open('https://maps.google.com?q=Gedung+Harmoni,+Jl.+Melati+No.123,+Pontianak');
+    }
+
+    // Get guest name from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const guest = urlParams.get("tamu");
+    if (guest) document.getElementById("guest-name").innerText = decodeURIComponent(guest);
+
+    // Page Navigation
+    let currentPage = 1;
+    const totalPages = 4;
+
+    function openInvitation() {
+      // Open curtains
+      document.querySelector('.curtain-left').style.transform = 'translateX(-100%)';
+      document.querySelector('.curtain-right').style.transform = 'translateX(100%)';
+
+      // After curtains open, show page 2
+      setTimeout(() => {
+        document.getElementById('cover').classList.remove('active');
+        document.getElementById('page2').classList.add('active');
+        currentPage = 2;
+      }, 1500);
+    }
+
+    function nextPage() {
+      if (currentPage < totalPages) {
+        // Fade out current page
+        document.getElementById(`page${currentPage}`).classList.remove('active');
+
+        // Fade in next page
+        currentPage++;
+        document.getElementById(`page${currentPage}`).classList.add('active');
+      }
+    }
+
+    // Add more butterflies on click
+    document.addEventListener('click', function(e) {
+      if (Math.random() > 0.7) { // 30% chance to add butterfly on click
+        const butterfly = document.createElement('div');
+        butterfly.className = 'butterfly';
+        butterfly.style.backgroundImage = 'url("https://www.freepnglogos.com/uploads/butterfly-png/butterfly-png-transparent-images-png-only-28.png")';
+        butterfly.style.left = `${e.clientX}px`;
+        butterfly.style.top = `${e.clientY}px`;
+        butterfly.style.animationDelay = `${Math.random() * 3}s`;
+        document.body.appendChild(butterfly);
+
+        // Remove butterfly after animation completes
+        setTimeout(() => {
+          butterfly.remove();
+        }, 8000);
+      }
+    });
+  </script>
 </body>
 </html>
