@@ -127,12 +127,10 @@
 
     .curtain-left {
       left: 0;
-      transform: translateX(0);
     }
 
     .curtain-right {
       right: 0;
-      transform: translateX(0);
     }
 
     .curtain-open .curtain-left {
@@ -148,6 +146,7 @@
       position: absolute;
       width: 40px;
       height: 40px;
+      background-image: url('https://www.freepnglogos.com/uploads/butterfly-png/butterfly-png-transparent-images-png-only-28.png');
       background-size: contain;
       background-repeat: no-repeat;
       z-index: 5;
@@ -226,6 +225,7 @@
   </div>
   <audio id="wedding-music" loop>
     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    Browser Anda tidak mendukung elemen audio.
   </audio>
 
   <!-- Curtain Opening Effect -->
@@ -233,9 +233,9 @@
   <div class="curtain curtain-right"></div>
 
   <!-- Butterflies -->
-  <div class="butterfly" style="background-image: url('https://www.freepnglogos.com/uploads/butterfly-png/butterfly-png-transparent-images-png-only-28.png'); top: 20%; left: 10%; animation-delay: 0s;"></div>
-  <div class="butterfly" style="background-image: url('https://www.freepnglogos.com/uploads/butterfly-png/butterfly-png-transparent-images-png-only-28.png'); top: 70%; left: 80%; animation-delay: 1s;"></div>
-  <div class="butterfly" style="background-image: url('https://www.freepnglogos.com/uploads/butterfly-png/butterfly-png-transparent-images-png-only-28.png'); top: 40%; left: 60%; animation-delay: 2s;"></div>
+  <div class="butterfly" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+  <div class="butterfly" style="top: 70%; left: 80%; animation-delay: 1s;"></div>
+  <div class="butterfly" style="top: 40%; left: 60%; animation-delay: 2s;"></div>
 
   <!-- Main Container -->
   <div class="invitation-container">
@@ -334,26 +334,42 @@
   </div>
 
   <script>
+    // Inisialisasi halaman pertama
+    document.addEventListener('DOMContentLoaded', function() {
+      // Aktifkan halaman cover
+      document.getElementById('cover').classList.add('active');
+      
+      // Coba mainkan musik (browser mungkin memblokir autoplay)
+      setTimeout(() => {
+        const music = document.getElementById('wedding-music');
+        music.play().catch(e => {
+          console.log('Autoplay diblokir:', e);
+          // Tampilkan pesan bahwa musik bisa dimainkan manual
+          const musicBtn = document.querySelector('.music-player');
+          musicBtn.innerHTML = '<i class="fas fa-music"></i><span style="font-size:0.5rem;position:absolute;bottom:-15px;left:0;right:0;color:#b56b6b">Klik untuk memutar</span>';
+        });
+      }, 1000);
+    });
+
     // Music control
-    const music = document.getElementById('wedding-music');
-    const musicBtn = document.querySelector('.music-player');
-    
     function toggleMusic() {
+      const music = document.getElementById('wedding-music');
+      const musicBtn = document.querySelector('.music-player');
+      
       if (music.paused) {
-        music.play();
-        musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        music.play()
+          .then(() => {
+            musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+          })
+          .catch(e => {
+            console.log('Gagal memutar musik:', e);
+            musicBtn.innerHTML = '<i class="fas fa-music"></i><span style="font-size:0.5rem;position:absolute;bottom:-15px;left:0;right:0;color:#b56b6b">Klik untuk memutar</span>';
+          });
       } else {
         music.pause();
         musicBtn.innerHTML = '<i class="fas fa-music"></i>';
       }
     }
-    
-    // Try to autoplay music (may be blocked by browser)
-    document.addEventListener('click', function() {
-      if (music.paused) {
-        music.play().catch(e => console.log('Autoplay blocked:', e));
-      }
-    }, { once: true });
 
     // Countdown
     const countdownDate = new Date("Jul 20, 2025 10:00:00").getTime();
@@ -410,41 +426,45 @@
     const totalPages = 4;
     
     function openInvitation() {
-      // Open curtains
-      document.querySelector('.curtain-left').style.transform = 'translateX(-100%)';
-      document.querySelector('.curtain-right').style.transform = 'translateX(100%)';
+      // Buka tirai
+      document.body.classList.add('curtain-open');
       
-      // After curtains open, show page 2
+      // Setelah tirai terbuka, tampilkan halaman 2
       setTimeout(() => {
         document.getElementById('cover').classList.remove('active');
         document.getElementById('page2').classList.add('active');
         currentPage = 2;
-      }, 1500);
+        
+        // Sembunyikan tirai setelah transisi selesai
+        setTimeout(() => {
+          document.querySelector('.curtain-left').style.display = 'none';
+          document.querySelector('.curtain-right').style.display = 'none';
+        }, 1500);
+      }, 1000);
     }
     
     function nextPage() {
       if (currentPage < totalPages) {
-        // Fade out current page
+        // Fade out halaman saat ini
         document.getElementById(`page${currentPage}`).classList.remove('active');
         
-        // Fade in next page
+        // Fade in halaman berikutnya
         currentPage++;
         document.getElementById(`page${currentPage}`).classList.add('active');
       }
     }
     
-    // Add more butterflies on click
+    // Tambahkan kupu-kupu saat diklik
     document.addEventListener('click', function(e) {
-      if (Math.random() > 0.7) { // 30% chance to add butterfly on click
+      if (Math.random() > 0.7 && e.target.className !== 'btn') {
         const butterfly = document.createElement('div');
         butterfly.className = 'butterfly';
-        butterfly.style.backgroundImage = 'url("https://www.freepnglogos.com/uploads/butterfly-png/butterfly-png-transparent-images-png-only-28.png")';
         butterfly.style.left = `${e.clientX}px`;
         butterfly.style.top = `${e.clientY}px`;
         butterfly.style.animationDelay = `${Math.random() * 3}s`;
         document.body.appendChild(butterfly);
         
-        // Remove butterfly after animation completes
+        // Hapus kupu-kupu setelah animasi selesai
         setTimeout(() => {
           butterfly.remove();
         }, 8000);
