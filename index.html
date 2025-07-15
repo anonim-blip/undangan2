@@ -4,117 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Undangan Pernikahan 3D</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lora&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
-      font-family: 'Lora', serif;
-      background: #f9f3f3;
-      color: #5e2c2c;
+      font-family: 'Montserrat', sans-serif;
       overflow-x: hidden;
+      perspective: 1000px;
       height: 100vh;
-      overflow-y: hidden;
+      background: #f8f3f3;
     }
 
-    /* Main Container */
-    .invitation-container {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    /* Pages */
-    .page {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      padding: 20px;
-      transform-style: preserve-3d;
-      transition: all 1.5s ease-in-out;
-      opacity: 0;
-      visibility: hidden;
-      background-size: cover;
-      background-position: center;
-    }
-
-    .page.active {
-      opacity: 1;
-      visibility: visible;
-      transform: translateZ(0);
-    }
-
-    /* Cover Page */
-    #cover {
-      background: url('https://i.pinimg.com/736x/b6/19/ce/b619ce3763b051df5831396887cdfa59.jpg') center/cover;
-      z-index: 10;
-    }
-
-    #cover.active {
-      z-index: 20;
-    }
-
-    /* Frame Design */
-    .frame {
-      border: 12px double #e7b9b9;
-      border-radius: 20px;
-      padding: 30px;
-      background: rgba(255, 255, 255, 0.85);
-      max-width: 800px;
-      width: 90%;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(177, 108, 108, 0.3);
-      transform: translateZ(50px);
-      position: relative;
-    }
-
-    /* Typography */
-    h1, h2 {
-      font-family: 'Great Vibes', cursive;
-      color: #b56b6b;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-    }
-
-    h1 { font-size: 3.5rem; margin-bottom: 15px; }
-    h2 { font-size: 2.5rem; margin: 20px 0; }
-    p { font-size: 1.1rem; line-height: 1.6; margin: 15px 0; }
-
-    /* Couple Photo */
-    .couple-photo {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      background: url('https://i.pinimg.com/736x/5a/3b/85/5a3b85a1c3a5d1b6e8c3a8e8d7c3a8e8.jpg') center/cover;
-      border: 8px solid #bfa36f;
-      margin: 0 auto 20px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-
-    /* Button */
-    .btn {
-      background: #b56b6b;
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 25px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: all 0.3s;
-      margin-top: 20px;
-    }
-
-    .btn:hover {
-      background: #9a5555;
-      transform: translateY(-2px);
-    }
-
-    /* Curtain Opening Effect */
+    /* 3D Curtain Effect */
     .curtain {
       position: fixed;
       top: 0;
@@ -122,23 +29,107 @@
       height: 100%;
       background: #5e2c2c;
       z-index: 100;
-      transition: all 1.5s ease-in-out;
+      transition: transform 1.5s ease-in-out;
     }
 
     .curtain-left {
       left: 0;
+      transform-origin: left;
     }
 
     .curtain-right {
       right: 0;
+      transform-origin: right;
     }
 
     .curtain-open .curtain-left {
-      transform: translateX(-100%);
+      transform: rotateY(-90deg);
     }
 
     .curtain-open .curtain-right {
-      transform: translateX(100%);
+      transform: rotateY(90deg);
+    }
+
+    /* Main Container */
+    .invitation-container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+    }
+
+    /* Sections */
+    section {
+      min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s;
+    }
+
+    /* 3D Card Effect */
+    .card-3d {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+      transform: translateZ(30px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      max-width: 800px;
+      width: 90%;
+    }
+
+    /* Typography */
+    h1, h2 {
+      font-family: 'Dancing Script', cursive;
+      color: #b56b6b;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      margin: 20px 0;
+    }
+
+    p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #555;
+    }
+
+    /* Couple Photos */
+    .couple-container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 30px 0;
+    }
+
+    .couple-photo {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      border: 5px solid #e7b9b9;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      transform: translateZ(40px);
+      transition: transform 0.5s;
+    }
+
+    .couple-photo:hover {
+      transform: translateZ(60px) scale(1.05);
     }
 
     /* Butterflies */
@@ -146,330 +137,232 @@
       position: absolute;
       width: 40px;
       height: 40px;
-      background-image: url('https://www.freepnglogos.com/uploads/butterfly-png/butterfly-png-transparent-images-png-only-28.png');
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="%23b56b6b" d="M256 0c-70.7 0-128 57.3-128 128s57.3 128 128 128 128-57.3 128-128S326.7 0 256 0zm0 192c-35.3 0-64-28.7-64-64s28.7-64 64-64 64 28.7 64 64-28.7 64-64 64z"/></svg>');
       background-size: contain;
-      background-repeat: no-repeat;
       z-index: 5;
       opacity: 0.8;
       animation: float 8s infinite ease-in-out;
     }
 
     @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      25% { transform: translateY(-20px) rotate(5deg); }
-      50% { transform: translateY(0) rotate(0deg); }
-      75% { transform: translateY(-15px) rotate(-5deg); }
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(10px, -20px) rotate(5deg); }
+      50% { transform: translate(-10px, 0) rotate(0deg); }
+      75% { transform: translate(5px, -15px) rotate(-5deg); }
     }
 
-    /* Countdown */
-    .countdown {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin: 20px 0;
-    }
-
-    .countdown-item {
-      background: #b56b6b;
-      color: white;
-      padding: 10px;
-      border-radius: 5px;
-      min-width: 60px;
-      text-align: center;
-    }
-
-    .countdown-number {
+    /* Scroll Indicator */
+    .scroll-indicator {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #b56b6b;
+      animation: bounce 2s infinite;
       font-size: 1.5rem;
-      font-weight: bold;
     }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+      40% { transform: translateY(-15px) translateX(-50%); }
+      60% { transform: translateY(-7px) translateX(-50%); }
+    }
+
+    /* Background Sections */
+    #cover { background: linear-gradient(135deg, #5e2c2c 0%, #8a3a3a 100%); }
+    #couple { background: #fff5f5; }
+    #event { background: #fef0f0; }
+    #location { background: #fff9f9; }
+    #rsvp { background: #fff5f5; }
 
     /* Music Player */
-    .music-player {
+    .music-control {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      z-index: 200;
-      background: white;
-      border-radius: 50%;
       width: 50px;
       height: 50px;
+      background: white;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      z-index: 50;
       cursor: pointer;
-    }
-
-    .music-player i {
-      font-size: 1.5rem;
-      color: #b56b6b;
     }
 
     /* Responsive */
     @media (max-width: 768px) {
       h1 { font-size: 2.5rem; }
       h2 { font-size: 2rem; }
-      
-      .couple-photo {
-        width: 150px;
-        height: 150px;
-      }
+      .couple-container { flex-direction: column; align-items: center; }
     }
   </style>
 </head>
-
 <body>
-  <!-- Music Player -->
-  <div class="music-player" onclick="toggleMusic()">
-    <i class="fas fa-music"></i>
-  </div>
-  <audio id="wedding-music" loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    Browser Anda tidak mendukung elemen audio.
-  </audio>
-
   <!-- Curtain Opening Effect -->
   <div class="curtain curtain-left"></div>
   <div class="curtain curtain-right"></div>
 
   <!-- Butterflies -->
-  <div class="butterfly" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
-  <div class="butterfly" style="top: 70%; left: 80%; animation-delay: 1s;"></div>
-  <div class="butterfly" style="top: 40%; left: 60%; animation-delay: 2s;"></div>
+  <div class="butterfly" style="top:20%; left:15%; animation-delay:0s;"></div>
+  <div class="butterfly" style="top:70%; left:80%; animation-delay:1s;"></div>
+  <div class="butterfly" style="top:40%; left:65%; animation-delay:2s;"></div>
 
-  <!-- Main Container -->
+  <!-- Music Control -->
+  <div class="music-control" onclick="toggleMusic()">
+    <i class="fas fa-music"></i>
+  </div>
+  <audio id="bg-music" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Main Content -->
   <div class="invitation-container">
-    <!-- Cover Page -->
-    <div id="cover" class="page active">
-      <div class="frame">
-        <div class="couple-photo"></div>
+    <!-- Cover Section -->
+    <section id="cover">
+      <div class="card-3d" style="color: white; background: rgba(0,0,0,0.2);">
         <h1>Undangan Pernikahan</h1>
         <p>Kepada Yth. Bapak/Ibu/Saudara/i</p>
         <h2 id="guest-name">Nama Tamu</h2>
-        
-        <div class="countdown" id="countdown">
-          <div class="countdown-item">
-            <div class="countdown-number" id="days"></div>
-            <div>Hari</div>
-          </div>
-          <div class="countdown-item">
-            <div class="countdown-number" id="hours"></div>
-            <div>Jam</div>
-          </div>
-          <div class="countdown-item">
-            <div class="countdown-number" id="minutes"></div>
-            <div>Menit</div>
-          </div>
-          <div class="countdown-item">
-            <div class="countdown-number" id="seconds"></div>
-            <div>Detik</div>
-          </div>
+        <div class="scroll-indicator">
+          <i class="fas fa-chevron-down"></i>
         </div>
-        
-        <button class="btn" onclick="openInvitation()">Buka Undangan</button>
       </div>
-    </div>
+    </section>
 
-    <!-- Page 2 - Couple -->
-    <div id="page2" class="page" style="background: rgba(255, 245, 245, 0.9);">
-      <div class="frame">
+    <!-- Couple Section -->
+    <section id="couple">
+      <div class="card-3d">
         <h2>Surianti & Rian</h2>
-        <p>Anak ke-4 Bapak Ha & Anak Ke-2 Bapak Aprian</p>
+        <p>Putra-Putri Bapak Ha & Ibu Aprian</p>
         
-        <div style="display: flex; justify-content: center; gap: 15px; margin: 20px 0; flex-wrap: wrap;">
-          <div style="width: 120px; height: 120px; border-radius: 50%; background: url('https://i.pinimg.com/736x/5a/3b/85/5a3b85a1c3a5d1b6e8c3a8e8d7c3a8e8.jpg') center/cover; border: 5px solid #bfa36f;"></div>
-          <div style="width: 120px; height: 120px; border-radius: 50%; background: url('https://i.pinimg.com/736x/5a/3b/85/5a3b85a1c3a5d1b6e8c3a8e8d7c3a8e8.jpg') center/cover; border: 5px solid #bfa36f;"></div>
+        <div class="couple-container">
+          <div class="couple-photo" style="background-image: url('https://i.pinimg.com/736x/5a/3b/85/5a3b85a1c3a5d1b6e8c3a8e8d7c3a8e8.jpg');"></div>
+          <div class="couple-photo" style="background-image: url('https://i.pinimg.com/736x/5a/3b/85/5a3b85a1c3a5d1b6e8c3a8e8d7c3a8e8.jpg');"></div>
         </div>
         
-        <p>Dengan penuh kebahagiaan, kami mengundang Anda untuk hadir dalam pernikahan kami:</p>
+        <p>Dengan penuh kebahagiaan, kami mengundang Anda untuk menyaksikan pernikahan kami</p>
+      </div>
+    </section>
+
+    <!-- Event Details -->
+    <section id="event">
+      <div class="card-3d">
+        <h2>Hari Bahagia Kami</h2>
         <p><strong>Sabtu, 20 Juli 2025</strong></p>
         <p><strong>Pukul 10.00 WIB - selesai</strong></p>
-        
-        <button class="btn" onclick="nextPage()">Lanjut</button>
+        <div style="margin: 30px 0;">
+          <p>Akad Nikah: 10.00 - 11.00 WIB</p>
+          <p>Resepsi: 12.00 - 15.00 WIB</p>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Page 3 - Location -->
-    <div id="page3" class="page" style="background: rgba(255, 235, 235, 0.9);">
-      <div class="frame">
+    <!-- Location Section -->
+    <section id="location">
+      <div class="card-3d">
         <h2>Lokasi Acara</h2>
         <p>Gedung Harmoni, Jl. Melati No.123, Pontianak</p>
-        
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15957.405212647934!2d109.3278457!3d-0.039397!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e1d592bda26116f%3A0x2583b16d8e44199!2sPontianak!5e0!3m2!1sid!2sid!4v1719924442345!5m2!1sid!2sid" 
                 allowfullscreen 
-                style="width: 100%; height: 300px; border: none; border-radius: 10px; margin: 20px 0;">
-        </iframe>
-        
-        <button class="btn" onclick="openMaps()">
-          <i class="fas fa-map-marker-alt"></i> Buka di Maps
+                style="width:100%; height:300px; border:none; border-radius:10px; margin:20px 0;"></iframe>
+        <button onclick="window.open('https://maps.google.com?q=Gedung+Harmoni,+Jl.+Melati+No.123,+Pontianak')" 
+                style="background:#b56b6b; color:white; border:none; padding:12px 25px; border-radius:25px; cursor:pointer;">
+          Buka di Maps
         </button>
-        <button class="btn" onclick="nextPage()" style="margin-top: 10px;">Lanjut</button>
       </div>
-    </div>
+    </section>
 
-    <!-- Page 4 - RSVP -->
-    <div id="page4" class="page" style="background: rgba(255, 245, 245, 0.9);">
-      <div class="frame">
+    <!-- RSVP Section -->
+    <section id="rsvp">
+      <div class="card-3d">
         <h2>Konfirmasi Kehadiran</h2>
-        
-        <div style="background: #fcefe3; padding: 16px; border-radius: 12px; border: 2px dashed #bfa36f; margin: 20px 0;">
-          <h3>Informasi Rekening</h3>
+        <div style="background:#fcefe3; padding:20px; border-radius:10px; margin:20px 0;">
           <p><strong>Bank BCA</strong><br>1234567890<br>a.n. Rian & Suri</p>
         </div>
-        
-        <div style="margin: 20px 0; width: 100%; max-width: 400px;">
-          <input type="text" id="namaRSVP" placeholder="Nama Anda" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #e7b9b9; border-radius: 8px;">
-          <select id="kehadiran" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #e7b9b9; border-radius: 8px;">
+        <div style="margin:20px 0;">
+          <input type="text" placeholder="Nama Anda" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #e7b9b9; border-radius:8px;">
+          <select style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #e7b9b9; border-radius:8px;">
             <option value="">Konfirmasi Kehadiran</option>
             <option value="hadir">Hadir</option>
             <option value="tidak-hadir">Tidak Hadir</option>
           </select>
-          <textarea id="ucapan" rows="3" placeholder="Tulis ucapan atau doa..." style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #e7b9b9; border-radius: 8px;"></textarea>
-          <button class="btn" onclick="submitRSVP()">
-            <i class="fas fa-paper-plane"></i> Kirim Konfirmasi
+          <textarea placeholder="Tulis ucapan..." style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #e7b9b9; border-radius:8px; height:100px;"></textarea>
+          <button style="background:#b56b6b; color:white; border:none; padding:12px 25px; border-radius:25px; cursor:pointer; width:100%;">
+            Kirim Ucapan
           </button>
         </div>
       </div>
-    </div>
+    </section>
   </div>
 
   <script>
-    // Inisialisasi halaman pertama
+    // Initialize
     document.addEventListener('DOMContentLoaded', function() {
-      // Aktifkan halaman cover
-      document.getElementById('cover').classList.add('active');
-      
-      // Coba mainkan musik (browser mungkin memblokir autoplay)
+      // Open curtains after page loads
       setTimeout(() => {
-        const music = document.getElementById('wedding-music');
-        music.play().catch(e => {
-          console.log('Autoplay diblokir:', e);
-          // Tampilkan pesan bahwa musik bisa dimainkan manual
-          const musicBtn = document.querySelector('.music-player');
-          musicBtn.innerHTML = '<i class="fas fa-music"></i><span style="font-size:0.5rem;position:absolute;bottom:-15px;left:0;right:0;color:#b56b6b">Klik untuk memutar</span>';
-        });
-      }, 1000);
+        document.body.classList.add('curtain-open');
+        
+        // Add more butterflies
+        for(let i=0; i<5; i++) {
+          addButterfly();
+        }
+      }, 500);
+      
+      // Get guest name from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const guest = urlParams.get('tamu');
+      if(guest) {
+        document.getElementById('guest-name').textContent = decodeURIComponent(guest);
+      }
     });
 
     // Music control
     function toggleMusic() {
-      const music = document.getElementById('wedding-music');
-      const musicBtn = document.querySelector('.music-player');
+      const music = document.getElementById('bg-music');
+      const btn = document.querySelector('.music-control i');
       
-      if (music.paused) {
-        music.play()
-          .then(() => {
-            musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
-          })
-          .catch(e => {
-            console.log('Gagal memutar musik:', e);
-            musicBtn.innerHTML = '<i class="fas fa-music"></i><span style="font-size:0.5rem;position:absolute;bottom:-15px;left:0;right:0;color:#b56b6b">Klik untuk memutar</span>';
-          });
+      if(music.paused) {
+        music.play();
+        btn.classList.remove('fa-music');
+        btn.classList.add('fa-pause');
       } else {
         music.pause();
-        musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+        btn.classList.remove('fa-pause');
+        btn.classList.add('fa-music');
       }
     }
 
-    // Countdown
-    const countdownDate = new Date("Jul 20, 2025 10:00:00").getTime();
-    
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const distance = countdownDate - now;
+    // Add random butterflies
+    function addButterfly() {
+      const butterfly = document.createElement('div');
+      butterfly.className = 'butterfly';
+      butterfly.style.left = Math.random() * 100 + '%';
+      butterfly.style.top = Math.random() * 100 + '%';
+      butterfly.style.animationDelay = Math.random() * 3 + 's';
+      document.body.appendChild(butterfly);
       
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      
-      document.getElementById('days').innerText = days;
-      document.getElementById('hours').innerText = Math.floor(hours);
-      document.getElementById('minutes').innerText = Math.floor(minutes);
-      document.getElementById('seconds').innerText = seconds;
-    }
-    
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
-
-    // RSVP Form
-    function submitRSVP() {
-      const name = document.getElementById("namaRSVP").value;
-      const attendance = document.getElementById("kehadiran").value;
-      const wish = document.getElementById("ucapan").value;
-      const phoneNumber = "6281263039363";
-      
-      if (name && attendance) {
-        const status = attendance === "hadir" ? "Hadir" : "Tidak Hadir";
-        const message = `Assalamu'alaikum,\nSaya *${name}* ingin mengkonfirmasi kehadiran:\n*${status}*\n\nUcapan: "${wish || '-'}"\n\nTerima kasih 🙏`;
-        const encodedMessage = encodeURIComponent(message);
-        const waUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-        
-        window.open(waUrl, '_blank');
-      } else {
-        alert("Mohon lengkapi nama dan konfirmasi kehadiran terlebih dahulu.");
-      }
-    }
-    
-    // Open Maps
-    function openMaps() {
-      window.open('https://maps.google.com?q=Gedung+Harmoni,+Jl.+Melati+No.123,+Pontianak');
-    }
-    
-    // Get guest name from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const guest = urlParams.get("tamu");
-    if (guest) document.getElementById("guest-name").innerText = decodeURIComponent(guest);
-    
-    // Page Navigation
-    let currentPage = 1;
-    const totalPages = 4;
-    
-    function openInvitation() {
-      // Buka tirai
-      document.body.classList.add('curtain-open');
-      
-      // Setelah tirai terbuka, tampilkan halaman 2
+      // Remove after animation
       setTimeout(() => {
-        document.getElementById('cover').classList.remove('active');
-        document.getElementById('page2').classList.add('active');
-        currentPage = 2;
-        
-        // Sembunyikan tirai setelah transisi selesai
-        setTimeout(() => {
-          document.querySelector('.curtain-left').style.display = 'none';
-          document.querySelector('.curtain-right').style.display = 'none';
-        }, 1500);
-      }, 1000);
+        butterfly.remove();
+      }, 8000);
     }
-    
-    function nextPage() {
-      if (currentPage < totalPages) {
-        // Fade out halaman saat ini
-        document.getElementById(`page${currentPage}`).classList.remove('active');
-        
-        // Fade in halaman berikutnya
-        currentPage++;
-        document.getElementById(`page${currentPage}`).classList.add('active');
-      }
-    }
-    
-    // Tambahkan kupu-kupu saat diklik
+
+    // Add butterfly on click
     document.addEventListener('click', function(e) {
-      if (Math.random() > 0.7 && e.target.className !== 'btn') {
-        const butterfly = document.createElement('div');
-        butterfly.className = 'butterfly';
-        butterfly.style.left = `${e.clientX}px`;
-        butterfly.style.top = `${e.clientY}px`;
-        butterfly.style.animationDelay = `${Math.random() * 3}s`;
-        document.body.appendChild(butterfly);
-        
-        // Hapus kupu-kupu setelah animasi selesai
-        setTimeout(() => {
-          butterfly.remove();
-        }, 8000);
+      if(e.target.className !== 'music-control' && Math.random() > 0.5) {
+        addButterfly();
       }
     });
+
+    // Try to autoplay music (may be blocked by browser)
+    setTimeout(() => {
+      document.getElementById('bg-music').play().catch(e => {
+        console.log('Autoplay blocked:', e);
+      });
+    }, 1000);
   </script>
 </body>
 </html>
